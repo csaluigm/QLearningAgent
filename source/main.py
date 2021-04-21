@@ -5,6 +5,7 @@ import numpy as np
 import torch
 import matplotlib.pyplot as plt
 from unityagents import UnityEnvironment
+import pandas as pd
 import os
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -18,7 +19,7 @@ brain_name = env.brain_names[0]
 brain = env.brains[brain_name]
 
 
-def train(episodes=1800, eps_start=1.0, eps_end=0.01, eps_decay=0.995):
+def train(episodes=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.995):
     agent = Agent(state_size=37, action_size=4, seed=0)
     scores = []                      
     scores_window = deque(maxlen=100)  
@@ -53,9 +54,9 @@ def train(episodes=1800, eps_start=1.0, eps_end=0.01, eps_decay=0.995):
         mean = np.mean(scores_window)
         if mean >=13.1 and mean <= 13.2:
             print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'.format(i_episode-100, np.mean(scores_window)))
-            torch.save(agent.qnetwork_local.state_dict(), '/model/solved_score_13.pth')
+            torch.save(agent.qnetwork_local.state_dict(), 'solved_score_13.pth')
 
-    torch.save(agent.qnetwork_local.state_dict(), '/model/trained_model.pth')
+    torch.save(agent.qnetwork_local.state_dict(), 'trained_model.pth')
     return scores
 def load_model(model,path='trained_model.pth'):
     model.load_state_dict(torch.load(os.path.join(THIS_FOLDER, path)))
@@ -98,10 +99,11 @@ def print_env_info(env):
 
 def plot_score_chart(scores):
     fig = plt.figure()
-    ax = fig.add_subplot(111)
+    fig.add_subplot(111)
     plt.plot(np.arange(len(scores)), scores)
-    plt.ylabel('Score')
-    plt.xlabel('Episode #')
+    plt.title("Scores")
+    rolling_mean = pd.Series(scores).rolling(100).mean()
+    plt.plot(rolling_mean)
     plt.show()
 
 print_env_info(env)

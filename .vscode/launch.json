@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "./source/main.py",
             "console": "integratedTerminal",
-            // "args":["--train", "1"]
+            "args":["--train", "1"]
         }
     ]
 }
