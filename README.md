@@ -41,7 +41,7 @@ You can run the project from some Editor like VS code or directly from commandli
 
 `python main.py --train 1`
 
-This will train the agent and will store 2 model weights. One when it pass the environment solved condition and other after 1800 episodes.
+This will train the agent and will store 2 model weights. One when it pass the environment solved condition and other after the training episodes.
 The proposed code normally solves the environment around 600 episodes.
 
 it stores the model in trained_model.pth on the root of the project.
